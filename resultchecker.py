@@ -44,6 +44,21 @@ def result_checker(register_number):
 
     return result,detail
 
+def chrome_exe_download():
+    """
+    Method to download the Zipped chrome executable and Unzip to desired location
+    """
+
+    if getattr(sys, 'frozen', False) :
+        destination_directory = os.path.dirname(sys.executable)
+    else:
+        destination_directory = os.path.dirname(__file__)
+
+    chrome_file_path = os.path.join(destination_directory, 'chromedriver.exe')
+    if not os.path.isfile(chrome_file_path):
+        r = requests.get('https://chromedriver.storage.googleapis.com/2.33/chromedriver_win32.zip', verify=False)
+        z = zipfile.ZipFile(io.BytesIO(r.content))
+        z.extractall(destination_directory)
 
 
 def write_to_csv(res):
@@ -138,7 +153,7 @@ def handle_details_an(det):
 
 
 if __name__ == "__main__":
-    
+    chrome_exe_download()
     print "Before Entering the details please press '1' or u can press any key  if you wish to continue"
     switch = input()
     if switch == 1:
