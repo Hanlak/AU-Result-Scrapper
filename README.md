@@ -1,7 +1,5 @@
 # AU-Result-Scrapper
-GUI is in progress
+A Graphic user interface to fetch the multiple student's exam results of andhra university using a search keyword and with an option of exporting to csv file. It also displays an individual student results with an option of exporting to PDF.
 
-Takes a predefined search term of a specifc result page in the program that have to be given before running the program 
-aks the input for register numbers
-
-stores the result in csv that can be convert to excel files
+# Notes
+* Search Keyword - A keyword explaning the examination held on month & year, degree name, student's current graduation year.
