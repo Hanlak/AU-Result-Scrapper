@@ -22,7 +22,7 @@ def result_checker(register_number):
 
 
     search_bar = driver.find_element_by_xpath('//*[@id="res_filter"]/label/input')
-    search_bar.send_keys(' result to be searched ') # as per ur required result
+    search_bar.send_keys(' result to be searched ') #Example : 'B.E/B.TECH. AND MS INTEGRATED THIRD YEAR SECOND SEMESTER EXAMINATION HELD IN APRIL 2017'
     onclick = driver.find_element_by_xpath('//*[@id="res"]/tbody/tr/td[4]/form/button')
 
     onclick.send_keys(Keys.RETURN)
