@@ -1,6 +1,6 @@
-"""
-Author:B.venkata pruhvi
-Chorme driver auto download added by sarchakar
+""""
+Author: Prudhvi
+
 """
 
 from selenium import webdriver
@@ -27,7 +27,7 @@ def result_checker(register_number):
 
 
     search_bar = driver.find_element_by_xpath('//*[@id="res_filter"]/label/input')
-    search_bar.send_keys(' result to be searched ') #Example : 'B.E/B.TECH. AND MS INTEGRATED THIRD YEAR SECOND SEMESTER EXAMINATION HELD IN APRIL 2017'
+    search_bar.send_keys('B.E./B.TECH FOURTH YEAR FIRST SEMESTER EXAMINATION HELD NOVEMBER 2017') #
     onclick = driver.find_element_by_xpath('//*[@id="res"]/tbody/tr/td[4]/form/button')
 
     onclick.send_keys(Keys.RETURN)
@@ -49,21 +49,6 @@ def result_checker(register_number):
 
     return result,detail
 
-def chrome_exe_download():
-    """
-    Method to download the Zipped chrome executable and Unzip to desired location
-    """
-
-    if getattr(sys, 'frozen', False) :
-        destination_directory = os.path.dirname(sys.executable)
-    else:
-        destination_directory = os.path.dirname(__file__)
-
-    chrome_file_path = os.path.join(destination_directory, 'chromedriver.exe')
-    if not os.path.isfile(chrome_file_path):
-        r = requests.get('https://chromedriver.storage.googleapis.com/2.33/chromedriver_win32.zip', verify=False)
-        z = zipfile.ZipFile(io.BytesIO(r.content))
-        z.extractall(destination_directory)
 
 
 def write_to_csv(res):
@@ -72,16 +57,16 @@ def write_to_csv(res):
         wr.writerow(res)
 
 
-def _list_maker():
-        _result = []
+def list_maker():
+        result = []
         with open('resulty.csv','rb') as f:
             reader = csv.reader(f)
             for row in reader:
                 for data in row:
-                    _result.append(data)
-        return _result
+                    result.append(data)
+        return result
 
-def _grade_ob_index(listy):
+def grade_ob_index(listy):
             count =0
             for data in listy:
                 if data == "GRADE OBTAINED" or   data == "MARKS OBTAINED":
@@ -90,10 +75,10 @@ def _grade_ob_index(listy):
                     count = count +1
 
 
-def _grade_for_namR(listy):
+def grade_for_namR(listy):
         counter = 0
-        for _check in listy:
-            if _check == " ":
+        for check in listy:
+            if check == " ":
                 return counter
             else:
                 counter = counter+1
@@ -101,10 +86,10 @@ def _grade_for_namR(listy):
 
 
 def handle_csv(register_number,studentname,registernumber,check_detail):
-    _result = _list_maker()
-    list_max_count = len(_result)
+    result = list_maker()
+    list_max_count = len(result)
 
-    start = _grade_ob_index(_result)+1
+    start = grade_ob_index(result)+1
 
     scores = []
     scores.append('STUDENTNAME')
@@ -116,13 +101,13 @@ def handle_csv(register_number,studentname,registernumber,check_detail):
 
     for allocate in range(start,list_max_count):
         if allocate % 2 == 0:
-            alocname =_result[allocate]
+            alocname =result[allocate]
             if check_detail: 
                 scores.append(alocname)
             else:
                 names.append(alocname)
         else:
-            alocgrade = _result[allocate]
+            alocgrade = result[allocate]
             if check_detail:
                 names.append(alocgrade)
             else:
@@ -130,39 +115,41 @@ def handle_csv(register_number,studentname,registernumber,check_detail):
     return names,scores
 
 
-def _handle_name_reg(counternr):
-    _pie = []
-    nameR = _list_maker()
+def handle_name_reg(counternr):
+    pie = []
+    nameR = list_maker()
     namsta = counternr+1
     regend = counternr+3
-    for _checkNR in range(namsta,regend):
-        piece = nameR[_checkNR].split(':')
-        _pie.append(piece)
-    return _pie[0][1].strip(),_pie[1][1].strip()
+    for checkNR in range(namsta,regend):
+        piece = nameR[checkNR].split(':')
+        pie.append(piece)
+    return pie[0][1].strip(),pie[1][1].strip()
 
 
-def append_to_the_final(_data):
-    with open('TheFinal.csv', 'ab') as myfile:
+def append_to_the_final(data,file_name):
+    with open(file_name, 'ab') as myfile:
         wr = csv.writer(myfile)
-        wr.writerow(_data)
+        wr.writerow(data)
 
-def clear_the_csv():
-    with open('TheFinal.csv','w') as myfile:
+def clear_the_csv(file_name):
+    with open(file_name,'w') as myfile:
         myfile.truncate()
 
 def handle_details_an(det):
     detai = []
-    for _dat in det:
-        detai.append(_dat.split(':'))
+    for dat in det:
+        detai.append(dat.split(':'))
     return detai[0][1].strip(),detai[1][1].strip()
 
 
 if __name__ == "__main__":
-    chrome_exe_download()
+    print 'Enter the name of the csv file you want to store the result'
+    file_name = str(raw_input())+'{}'.format('.csv')
+
     print "Before Entering the details please press '1' or u can press any key  if you wish to continue"
-    switch = input()
-    if switch == 1:
-        clear_the_csv()
+    switch = str(raw_input())
+    if switch == '1':
+        clear_the_csv(file_name)
 
     register_number_from= input('enter register_number from')
     register_number_to = input('enter register_number to')
@@ -178,14 +165,14 @@ if __name__ == "__main__":
             if check_detail:
                 studentname,registernumber = handle_details_an(det)
             else:
-                counternr = _grade_for_namR(res)
-                studentname,registernumber = _handle_name_reg(counternr)
+                counternr = grade_for_namR(res)
+                studentname,registernumber = handle_name_reg(counternr)
             score,sub_name = handle_csv(register_number,studentname,registernumber,check_detail)
             if name_not_entered:
-                append_to_the_final(sub_name)
-                append_to_the_final(score)
+                append_to_the_final(sub_name,file_name)
+                append_to_the_final(score,file_name)
                 name_not_entered = False
             else:
-                append_to_the_final(score)
+                append_to_the_final(score,file_name)
         else:
             print 'result not found'
