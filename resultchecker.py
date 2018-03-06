@@ -14,7 +14,7 @@ def result_checker(register_number):
     display.start()
 
 
-    chromedriver = '/home/hanlak/Music/chromedriver'
+    chromedriver = #add the chrome driver path Ex: '/home/hanlak/chromedriver' in linux(ubuntu)
 
 
     options = webdriver.ChromeOptions()
