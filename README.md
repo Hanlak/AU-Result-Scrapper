@@ -13,7 +13,7 @@ cd AU-Result-Scrapper
 
 ###### use `pip` to install the neccessary requirements
  ```
- pip install requirements.txt
+ pip install --upgrade -r requirements.txt
  ```
  ###### next 
  ```
