@@ -23,4 +23,4 @@ cd AU-Result-Scrapper
 * Add the downlaod chrome driver path to `chromedriver variable at line 17`
 * Add the search term at `line 30` inorder to naviagte to a specific page
 
-######Thank You
+###### Thank You
